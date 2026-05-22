@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT Downloader</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>YouTube Downloader</h1>
+            <p>Pega un link de video o playlist para comenzar</p>
+        </header>
+        
+        <main>
+            <div class="field">
+                <label>URL de YouTube</label>
+                <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=...">
+            </div>
+
+            <div class="row">
+
+                <div class="field">
+                    <div class="label-with-info">
+                        <label>Formato</label>
+                        <div class="info-icon">?
+                            <div class="tooltip">
+                                <strong>MP4:</strong> Máxima compatibilidad (TVs, Celulares). Suele limitarse a 1080p.<br><br>
+                                <strong>Mejor Calidad:</strong> Baja la resolución más alta (4K/8K). Usa formatos modernos (.webm/.mkv).
+                            </div>
+                        </div>
+                    </div>
+                    <select id="format">
+                        <option value="best">Mejor Calidad (Video)</option>
+                        <option value="mp4">MP4 (Video)</option>
+                        <option value="mp3">MP3 (Audio)</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Destino</label>
+                    <button class="btn-secondary" id="btn-select-path">📁 Elegir Carpeta</button>
+                </div>
+            </div>
+
+            <div class="path-display">
+                <span>Guardar en: </span>
+                <strong id="current-path">No seleccionado</strong>
+            </div>
+
+            <button class="btn-primary" id="btn-download">Descargar ahora</button>
+            
+            <div class="status-container">
+                <p id="status">Listo para descargar</p>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar" class="progress-bar-fill"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
