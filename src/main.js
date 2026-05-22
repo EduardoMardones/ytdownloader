@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        statusText.innerText = "⏳ Descargando... Revisa la terminal";
+        statusText.innerText = "⏳ Descargando...";
         statusText.style.color = "black";
         progressBar.style.width = "30%";
 

@@ -6,8 +6,14 @@ use tauri_plugin_shell::process::CommandEvent;
 #[tauri::command]
 async fn download_video(app: tauri::AppHandle, url: String, format: String, path: String) -> Result<String, String> {
     let output_template = format!("{}/%(title)s.%(ext)s", path);
-    let mut args: Vec<String> = vec![url, "-o".to_string(), output_template];
-
+    let mut args: Vec<String> = vec![
+        url.clone(),
+        "-o".to_string(),
+        output_template,
+        "--newline".to_string(),
+        "--no-cache-dir".to_string(), // Limpia cache por si acaso
+        "--force-overwrites".to_string(), // Fuerza a que lo baje de nuevo
+    ];
     if format == "mp3" {
         args.extend(vec!["-x".to_string(), "--audio-format".to_string(), "mp3".to_string()]);
     } else if format == "mp4" {
@@ -22,8 +28,17 @@ async fn download_video(app: tauri::AppHandle, url: String, format: String, path
         .map_err(|e| e.to_string())?;
 
     while let Some(event) = rx.recv().await {
-        if let CommandEvent::Stdout(line) = event {
-            println!("{}", String::from_utf8_lossy(&line));
+        match event {
+            CommandEvent::Stdout(line) => {
+                let s = String::from_utf8_lossy(&line);
+                // ... (tu lógica de porcentaje aquí) ...
+                println!("LOG: {}", s);
+            },
+            CommandEvent::Stderr(line) => {
+                let s = String::from_utf8_lossy(&line);
+                println!("ERROR: {}", s); // Esto te dirá si YouTube te bloqueó
+            },
+            _ => {}
         }
     }
     Ok("¡Descarga Finalizada!".into())
