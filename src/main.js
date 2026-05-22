@@ -5,16 +5,16 @@ const { open } = window.__TAURI__.dialog; // Nuevo: Acceso directo al plugin de 
 document.addEventListener('DOMContentLoaded', () => {
     const btnDownload = document.getElementById('btn-download');
     const btnPath = document.getElementById('btn-select-path');
+    const btnUpdate = document.getElementById('btn-update');
     const statusText = document.getElementById('status');
     const progressBar = document.getElementById('progress-bar');
     const currentPathDisplay = document.getElementById('current-path');
     
     let selectedPath = "";
 
-    // Seleccionar carpeta (VERSION CORREGIDA QUE NO SE PEGA)
+    // Seleccionar carpeta
     btnPath.addEventListener('click', async () => {
         try {
-            // Llamamos al plugin de diálogo directamente desde JS
             const path = await open({
                 directory: true,
                 multiple: false,
@@ -31,6 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Actualizar motor (Cambios aplicados aquí)
+    btnUpdate.addEventListener('click', async () => {
+        statusText.innerText = "⏳ Descargando última versión del motor... No cierres la app.";
+        statusText.style.color = "orange";
+        
+        try {
+            const res = await invoke('update_engine');
+            statusText.innerText = "✅ " + res;
+            statusText.style.color = "green";
+        } catch (e) {
+            statusText.innerText = "❌ Error al actualizar: " + e;
+            statusText.style.color = "red";
+        }
+    });
+
+    // Descargar video
     btnDownload.addEventListener('click', async () => {
         const url = document.getElementById('url').value;
         const format = document.getElementById('format').value;
